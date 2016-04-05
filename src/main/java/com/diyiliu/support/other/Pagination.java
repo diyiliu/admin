@@ -11,7 +11,7 @@ public class Pagination {
     private int currentPage = 1;
 
     private int maxPage = 0;
-    private int totalCount = 0;
+    private Long count = 0l;
 
     public Pagination() {
 
@@ -30,8 +30,12 @@ public class Pagination {
         this.pageSize = pageSize > 0 ? pageSize : 1;
     }
 
-    public void setTotalCount(int totalCount) {
-        this.totalCount = totalCount;
+    public Long getCount() {
+        return count;
+    }
+
+    public void setCount(Long count) {
+        this.count = count;
     }
 
     public int getCurrentPage() {
@@ -43,7 +47,9 @@ public class Pagination {
     }
 
     public int getMaxPage() {
+        int totalCount = count.intValue();
         maxPage = totalCount % pageSize == 0 ? totalCount / pageSize : totalCount / pageSize + 1;
+
         return maxPage;
     }
 

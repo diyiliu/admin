@@ -58,15 +58,16 @@ dependencies {
             "javax.servlet:javax.servlet-api:$servlertApiVersion",
             "javax.servlet.jsp:jsp-api:$jspApiVersion",
             "javax.servlet:jstl:$jstlVersion",
+            // jackson
+            "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion",
             // logback
             "ch.qos.logback:logback-classic:$logbackVersion",
             // 其他依赖包
             "com.alibaba:druid:$druidVersion",
             "mysql:mysql-connector-java:$mysqlConnectorVersion",
             "commons-collections:commons-collections:$commmonsVersion",
-            "javax.persistence:persistence-api:$jpaVersion",
-            // jackson
-            "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion"
+            "javax.persistence:persistence-api:$jpaVersion"
+
     )
 
     testCompile(

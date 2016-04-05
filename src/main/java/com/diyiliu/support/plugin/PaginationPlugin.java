@@ -172,11 +172,11 @@ public class PaginationPlugin implements Interceptor {
                     boundSql.getParameterMappings(), boundSql.getParameterObject());
             setParameters(statement, mappedStatement, countBS, boundSql.getParameterObject());
             rs = statement.executeQuery();
-            int totalCount = 0;
+            long count = 0;
             if (rs.next()) {
-                totalCount =  Long.valueOf(rs.getLong(1)).intValue();
+                count =  rs.getLong(1);
             }
-            page.setTotalCount(totalCount);
+            page.setCount(count);
         } catch (SQLException e) {
             logger.error("SQLException", e);
         } finally {

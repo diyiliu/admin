@@ -8,7 +8,7 @@
     </insert>
 
     <delete id="deleteEntity">
-        delete from table where id = id
+        delete from table where id = (id)
     </delete>
 
     <update id="updateEntity">

@@ -1019,6 +1019,19 @@ h1.page-header {
     outline: 0;
 }
 
+.pagination > li > a,
+.pagination > li > span {
+    position: relative;
+    float: left;
+    padding: 6px 12px;
+    margin-left: -1px;
+    line-height: 1.42857143;
+    color: #1ebfae;
+    text-decoration: none;
+    background-color: #fff;
+    border: 1px solid #ddd;
+}
+
 .pagination > li > a:hover,
 .pagination > li > span:hover,
 .pagination > li > a:focus,
@@ -1026,4 +1039,18 @@ h1.page-header {
     color: #1ebfae;
     background-color: #eee;
     border-color: #ddd;
+}
+
+.btn-group > .btn:first-child:not(:last-child) {
+    border-right: 2px solid #fff;
+}
+
+/*
+.btn-group > .btn:not(first-child):not(:last-child) {
+    border-right: 2px solid #fff;
+}
+*/
+
+.btn-group > .btn:last-child:not(:first-child) {
+    border-left: 1px solid #fff;
 }

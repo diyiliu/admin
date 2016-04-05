@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.diyiliu.web.dao.UserDao">
+
+    <select id="selectUsersByPage" parameterType="String" resultType="User">
+            SELECT
+               *
+            FROM
+               USER
+            <where>
+              <if test="condition != null">
+                  ID LIKE CONCAT('%', #{condition}, '%')
+                  || NAME LIKE CONCAT('%', #{condition}, '%')
+                  || AGE LIKE CONCAT('%', #{condition}, '%')
+              </if>
+            </where>
+    </select>
+</mapper>

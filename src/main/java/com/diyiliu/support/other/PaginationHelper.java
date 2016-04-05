@@ -35,4 +35,10 @@ public class PaginationHelper {
 
         return LOCAL_PAGINATION.get().getMaxPage();
     }
+
+
+    public static long getCount(){
+
+        return LOCAL_PAGINATION.get().getCount();
+    }
 }
