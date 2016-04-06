@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
 
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -9,6 +10,7 @@
 
     <link href="${ctx}/static/css/bootstrap.min.css" rel="stylesheet">
     <link href="${ctx}/static/css/font-awesome.min.css" rel="stylesheet">
+    <link href="${ctx}/static/css/bootstrap-table.css" rel="stylesheet">
     <link href="${ctx}/static/css/admin.css" rel="stylesheet">
 
     <!--Icons-->
@@ -64,7 +66,7 @@
         </div>
     </form>
     <ul class="nav menu">
-        <li><a href="${ctx}/user/user.htm"><i class="fa fa-user fa-fw"></i> 用户管理</a></li>
+        <li class="active"><a href="user.html"><i class="fa fa-user fa-fw"></i> 用户管理</a></li>
         <li><a href="widgets.html"><i class="fa fa-cloud-upload fa-fw"></i> 发布管理</a></li>
         <li><a href="widgets.html"><i class="fa fa-file fa-fw"></i> 案例管理</a></li>
         <li><a href="widgets.html"><i class="fa fa-sitemap fa-fw"></i> 组织管理</a></li>
@@ -101,18 +103,71 @@
     <div class="row">
         <ol class="breadcrumb">
             <li><a href="index.html"><i class="fa fa-home fa-fw"></i></a></li>
-            <li class="active">首页</li>
+            <li class="active">用户管理</li>
         </ol>
     </div><!--/.row-->
 
+    <!--
     <div class="row">
         <div class="col-lg-12">
             <h1 class="page-header">欢迎，你好！</h1>
         </div>
+    </div>
+    /.row-->
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">用户信息</div>
+                <div class="panel-body">
+                    <form class="form-horizontal col-md-8" action="" method="post">
+                        <fieldset>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label" for="name">姓 名</label>
+                                <div class="col-md-9">
+                                    <input id="name" name="name" type="text" placeholder="Your name"
+                                           class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-md-3 control-label" for="age">年 龄</label>
+                                <div class="col-md-9">
+                                    <input id="age" name="age" type="text" placeholder="Your age" class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-md-3 control-label" for="email">邮 箱</label>
+                                <div class="col-md-9">
+                                    <input id="email" name="email" type="text" placeholder="Your email"
+                                           class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-md-3 control-label" for="message">详 情</label>
+                                <div class="col-md-9">
+                                    <textarea class="form-control" id="message" name="message"
+                                              placeholder="Please enter your message here..." rows="5"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-12 widget-right">
+                                    <button type="submit" class="btn btn-default btn-md pull-right">提交</button>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div><!--/.row-->
-</div>
+</div><!--/.main-->
 
 <script src="${ctx}/static/js/jquery-1.11.1.min.js"></script>
 <script src="${ctx}/static/js/bootstrap.min.js"></script>
+
 </body>
 </html>
