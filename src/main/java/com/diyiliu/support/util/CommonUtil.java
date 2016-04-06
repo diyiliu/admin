@@ -7,7 +7,7 @@ package com.diyiliu.support.util;
  */
 public class CommonUtil {
 
-    public boolean isEmpty(String str) {
+    public static  boolean isEmpty(String str) {
 
         if (str == null || str.trim().length() < 1){
 

@@ -2,6 +2,7 @@ package com.diyiliu.web.dao;
 
 import com.diyiliu.web.dao.mapper.BaseMapper;
 import com.diyiliu.web.entity.User;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -12,5 +13,5 @@ import java.util.List;
  */
 public interface UserDao extends BaseMapper{
 
-    public List<User> selectUsersByPage(String condition);
+    List<User> selectUsersByPage(@Param(value = "condition") String condition);
 }

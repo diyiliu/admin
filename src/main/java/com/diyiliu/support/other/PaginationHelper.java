@@ -9,13 +9,13 @@ public class PaginationHelper {
 
     private static ThreadLocal<Pagination> LOCAL_PAGINATION = new ThreadLocal<Pagination>();
 
-    public static void page(int currentPage, int pageSize){
+    public static void page(int offset, int limit){
         Pagination pagination = LOCAL_PAGINATION.get();
         if (pagination == null){
             pagination = new Pagination();
         }
-        pagination.setCurrentPage(currentPage);
-        pagination.setPageSize(pageSize);
+        pagination.setOffset(offset);
+        pagination.setLimit(limit);
 
         LOCAL_PAGINATION.set(pagination);
     }
@@ -30,15 +30,8 @@ public class PaginationHelper {
         LOCAL_PAGINATION.remove();
     }
 
-
-    public static int  getMaxPage(){
-
-        return LOCAL_PAGINATION.get().getMaxPage();
-    }
-
-
     public static long getCount(){
 
-        return LOCAL_PAGINATION.get().getCount();
+        return LOCAL_PAGINATION.get().getTotal();
     }
 }

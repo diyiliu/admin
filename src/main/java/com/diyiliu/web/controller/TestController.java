@@ -2,6 +2,7 @@ package com.diyiliu.web.controller;
 
 import com.diyiliu.support.other.Pagination;
 import com.diyiliu.support.other.PaginationHelper;
+import com.diyiliu.support.util.CommonUtil;
 import com.diyiliu.web.entity.Test;
 import com.diyiliu.web.entity.User;
 import com.diyiliu.web.service.UserService;
@@ -15,7 +16,6 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -66,23 +66,23 @@ public class TestController extends BaseController {
 
     @ResponseBody
     @RequestMapping(value = "/table")
-    public String table(HttpServletRequest request) {
-        String search = request.getParameter("search");
+    public String table(HttpServletRequest request, @RequestParam(required = false) String search) {
 
-        BootPage bootPage = new BootPage(Integer.valueOf(request.getParameter("limit")),
-                Integer.valueOf(request.getParameter("offset")),
-                request.getParameter("order"));
+        Pagination pagination = new Pagination();
+        pagination.setOffset(Integer.valueOf(request.getParameter("offset")));
+        pagination.setLimit(Integer.valueOf(request.getParameter("limit")));
+        pagination.setOrder(request.getParameter("order"));
 
-        PaginationHelper.page(bootPage.offset, bootPage.limit);
+        PaginationHelper.page(pagination.getOffset(), pagination.getLimit());
 
-        List<User> list = userService.selectUsers(search);
+        List<User> list = userService.selectUsers(CommonUtil.isEmpty(search) ? null : search.trim());
 
-        bootPage.setTotal(PaginationHelper.getCount());
-        bootPage.setRows(list);
+        pagination.setTotal(PaginationHelper.getCount());
+        pagination.setRows(list);
 
-        System.out.println(toJson(bootPage));
+        System.out.println(toJson(pagination));
 
-        return toJson(bootPage);
+        return toJson(pagination);
     }
 
 }

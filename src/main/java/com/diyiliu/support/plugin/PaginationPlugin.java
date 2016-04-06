@@ -86,7 +86,7 @@ public class PaginationPlugin implements Interceptor {
             // 设置参数
             setPageParameter(sql, connection, mappedStatement, boundSql, pagination);
             // 分页sql
-            sql = buidPageSql(sql, pagination.getCurrentPage(), pagination.getPageSize());
+            sql = buidPageSql(sql, pagination.getOffset(), pagination.getLimit());
             // 重写sql
             metaStatementHandler.setValue("delegate.boundSql.sql", sql);
         }
@@ -109,34 +109,34 @@ public class PaginationPlugin implements Interceptor {
         this.pageSqlId = properties.getProperty(pageSqlId);
     }
 
-    public String buidPageSql(String sql, int currentPage, int pageSize) {
+    public String buidPageSql(String sql, int offset, int limit) {
 
         if (dialect.equals("mysql")) {
 
-            return buildPageSqlForMysql(sql, currentPage, pageSize).toString();
+            return buildPageSqlForMysql(sql, offset, limit).toString();
         }
 
         if (dialect.equals("oracle")) {
 
-            return buildPageSqlForOracle(sql, currentPage, pageSize).toString();
+            return buildPageSqlForOracle(sql, offset, limit).toString();
         }
 
         return null;
     }
 
 
-    public StringBuilder buildPageSqlForMysql(String sql, int currentPage, int pageSize) {
+    public StringBuilder buildPageSqlForMysql(String sql, int offset, int limit) {
         StringBuilder pageSql = new StringBuilder(sql);
-        pageSql.append(" limit " + (currentPage - 1) * pageSize + "," + pageSize);
+        pageSql.append(" limit " + offset + "," + limit);
         return pageSql;
     }
 
-    public StringBuilder buildPageSqlForOracle(String sql, int currentPage, int pageSize) {
+    public StringBuilder buildPageSqlForOracle(String sql, int offset, int limit) {
         StringBuilder pageSql = new StringBuilder(sql);
         pageSql.append("select * from ( select temp.*, rownum row_id from ( ");
         pageSql.append(sql);
-        pageSql.append(" ) temp where rownum <= ").append(currentPage * pageSize);
-        pageSql.append(") where row_id > ").append((currentPage - 1) * pageSize);
+        pageSql.append(" ) temp where rownum <= ").append(offset + limit);
+        pageSql.append(") where row_id > ").append(offset);
         return pageSql;
     }
 
@@ -176,7 +176,7 @@ public class PaginationPlugin implements Interceptor {
             if (rs.next()) {
                 count =  rs.getLong(1);
             }
-            page.setCount(count);
+            page.setTotal(count);
         } catch (SQLException e) {
             logger.error("SQLException", e);
         } finally {

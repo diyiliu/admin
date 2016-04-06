@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
 
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -145,10 +146,10 @@
     $(function () {
         $('#userList').bootstrapTable({
             url: '${ctx}/test/table.htm',
-            toolbar: '#toolbar',
             showRefresh: true,
             search: true,
             pagination: true,
+            toolbar: '#toolbar',
             sidePagination: 'server',
             columns: [
                 {field: "state", title: "", titleTooltip: "全选", checkbox: true},

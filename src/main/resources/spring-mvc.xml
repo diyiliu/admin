@@ -22,8 +22,8 @@
 
     <!-- MVC注解映射的支持 -->
     <mvc:annotation-driven/>
-    <!-- 访问静态资源文件 -->
-    <mvc:resources mapping="/static/**" location="/static/" />
+    <!-- 访问静态资源文件
+    <mvc:resources mapping="/static/**" location="/static/" />-->
 
 
     <!-- MVC拦截器 -->

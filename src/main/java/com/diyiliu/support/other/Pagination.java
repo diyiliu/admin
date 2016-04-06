@@ -1,56 +1,61 @@
 package com.diyiliu.support.other;
 
+import java.util.List;
+
 /**
  * Description: Pagination
  * Author: DIYILIU
  * Update: 2015-11-19 17:12
  */
-public class Pagination {
+public class Pagination<T> {
 
-    private int pageSize = 10;
-    private int currentPage = 1;
+    private Long total;
 
-    private int maxPage = 0;
-    private Long count = 0l;
+    private List<T> rows;
 
-    public Pagination() {
+    private int limit = 0;
 
+    private int offset = 0;
+
+    private String order = "asc";
+
+    public Long getTotal() {
+        return total;
     }
 
-    public Pagination(int currentPage, int pageSize) {
-        this.currentPage = currentPage > 0 ? currentPage : 1;
-        this.pageSize = pageSize > 0 ? currentPage : 1;
+    public void setTotal(Long total) {
+        this.total = total;
     }
 
-    public void setCurrentPage(int currentPage) {
-        this.currentPage = currentPage > 0 ? currentPage : 1;
+    public List<T> getRows() {
+        return rows;
     }
 
-    public void setPageSize(int pageSize) {
-        this.pageSize = pageSize > 0 ? pageSize : 1;
+    public void setRows(List<T> rows) {
+        this.rows = rows;
     }
 
-    public Long getCount() {
-        return count;
+    public int getLimit() {
+        return limit;
     }
 
-    public void setCount(Long count) {
-        this.count = count;
+    public void setLimit(int limit) {
+        this.limit = limit;
     }
 
-    public int getCurrentPage() {
-        return currentPage;
+    public int getOffset() {
+        return offset;
     }
 
-    public int getPageSize() {
-        return pageSize;
+    public void setOffset(int offset) {
+        this.offset = offset;
     }
 
-    public int getMaxPage() {
-        int totalCount = count.intValue();
-        maxPage = totalCount % pageSize == 0 ? totalCount / pageSize : totalCount / pageSize + 1;
-
-        return maxPage;
+    public String getOrder() {
+        return order;
     }
 
+    public void setOrder(String order) {
+        this.order = order;
+    }
 }
