@@ -14,4 +14,6 @@ import java.util.List;
 public interface UserDao extends BaseMapper{
 
     List<User> selectUsersByPage(@Param(value = "condition") String condition);
+
+    User selectUserById(@Param(value = "id") int id);
 }

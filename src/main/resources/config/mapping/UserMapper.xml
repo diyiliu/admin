@@ -5,7 +5,7 @@
 
     <select id="selectUsersByPage" parameterType="String" resultType="User">
             SELECT
-               *
+              *
             FROM
                USER
             <where>
@@ -15,5 +15,14 @@
                   || AGE LIKE CONCAT('%', #{condition}, '%')
               </if>
             </where>
+    </select>
+
+    <select id="selectUserById" parameterType="int" resultType="User">
+            SELECT
+              *
+            FROM
+               USER
+            WHERE
+                ID = #{id}
     </select>
 </mapper>

@@ -6,6 +6,7 @@ import com.diyiliu.web.controller.base.BaseController;
 import com.diyiliu.web.entity.User;
 import com.diyiliu.web.service.UserService;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -47,9 +48,10 @@ public class UserController extends BaseController {
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.GET)
-    public String userUpdate(@RequestParam int id) {
+    public String userUpdate(@RequestParam int id, Model model) {
 
-
+        User user = userService.selectUserById(id);
+        model.addAttribute(user);
 
         return "/user/userUpdate";
     }

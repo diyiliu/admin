@@ -15,7 +15,7 @@ import java.util.List;
  */
 
 @Service
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 
     @Resource
     private UserDao userDao;
@@ -24,5 +24,11 @@ public class UserServiceImpl implements UserService{
     public List<User> selectUsers(String condition) {
 
         return userDao.selectUsersByPage(condition);
+    }
+
+    @Override
+    public User selectUserById(int id) {
+
+        return userDao.selectUserById(id);
     }
 }

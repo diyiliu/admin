@@ -11,5 +11,7 @@ import java.util.List;
  */
 public interface UserService {
 
-    public List<User> selectUsers(String condition);
+    List<User> selectUsers(String condition);
+
+    User selectUserById(int id);
 }

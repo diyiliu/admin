@@ -118,38 +118,35 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="panel panel-default">
-                <div class="panel-heading">用户信息</div>
+                <div class="panel-heading">用户</div>
                 <div class="panel-body">
                     <form class="form-horizontal col-md-8" action="" method="post">
                         <fieldset>
                             <div class="form-group">
-                                <label class="col-md-3 control-label" for="name">姓 名</label>
+                                <label class="col-md-3 control-label" for="name">姓  名</label>
                                 <div class="col-md-9">
-                                    <input id="name" name="name" type="text" placeholder="Your name"
-                                           class="form-control">
+                                    <input id="name" name="name" type="text" placeholder="Your name" class="form-control" value="${user.name}">
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label class="col-md-3 control-label" for="age">年 龄</label>
+                                <label class="col-md-3 control-label" for="age">年  龄</label>
                                 <div class="col-md-9">
-                                    <input id="age" name="age" type="text" placeholder="Your age" class="form-control">
+                                    <input id="age" name="age" type="text" placeholder="Your age" class="form-control" value="${user.age}">
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label class="col-md-3 control-label" for="email">邮 箱</label>
+                                <label class="col-md-3 control-label" for="email">邮  箱</label>
                                 <div class="col-md-9">
-                                    <input id="email" name="email" type="text" placeholder="Your email"
-                                           class="form-control">
+                                    <input id="email" name="email" type="text" placeholder="Your email" class="form-control">
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label class="col-md-3 control-label" for="message">详 情</label>
+                                <label class="col-md-3 control-label" for="message">详  情</label>
                                 <div class="col-md-9">
-                                    <textarea class="form-control" id="message" name="message"
-                                              placeholder="Please enter your message here..." rows="5"></textarea>
+                                    <textarea class="form-control" id="message" name="message" placeholder="Please enter your message here..." rows="5"></textarea>
                                 </div>
                             </div>
 
