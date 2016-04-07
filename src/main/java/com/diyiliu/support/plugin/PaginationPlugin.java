@@ -2,6 +2,7 @@ package com.diyiliu.support.plugin;
 
 import com.diyiliu.support.other.Pagination;
 import com.diyiliu.support.other.PaginationHelper;
+import com.diyiliu.support.util.CommonUtil;
 import org.apache.ibatis.executor.parameter.ParameterHandler;
 import org.apache.ibatis.executor.statement.StatementHandler;
 import org.apache.ibatis.mapping.BoundSql;
@@ -73,7 +74,7 @@ public class PaginationPlugin implements Interceptor {
 
         String url = connection.getMetaData().getURL();
 
-        dialect = fromJdbcUrl(url);
+        dialect = CommonUtil.fromJdbcUrl(url);
 
         Pagination pagination = PaginationHelper.getPage();
 
@@ -138,16 +139,6 @@ public class PaginationPlugin implements Interceptor {
         pageSql.append(" ) temp where rownum <= ").append(offset + limit);
         pageSql.append(") where row_id > ").append(offset);
         return pageSql;
-    }
-
-    public String fromJdbcUrl(String jdbcUrl) {
-        String[] dialects = new String[]{"mysql", "oracle"};
-        for (String dialect : dialects) {
-            if (jdbcUrl.indexOf(":" + dialect + ":") != -1) {
-                return dialect;
-            }
-        }
-        return null;
     }
 
     /**

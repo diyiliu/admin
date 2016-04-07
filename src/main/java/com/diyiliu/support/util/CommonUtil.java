@@ -16,4 +16,19 @@ public class CommonUtil {
 
         return false;
     }
+
+
+    public static String fromJdbcUrl(String jdbcUrl) {
+        String[] dialects = new String[]{"mysql", "oracle"};
+
+        for (String dialect : dialects) {
+            if (jdbcUrl.indexOf(":" + dialect + ":") != -1 ||
+                    jdbcUrl.indexOf(":" + dialect.toUpperCase() + ":") != -1) {
+
+                return dialect;
+            }
+        }
+
+        return null;
+    }
 }

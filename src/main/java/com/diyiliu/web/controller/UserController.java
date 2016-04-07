@@ -28,12 +28,6 @@ public class UserController extends BaseController {
     @Resource
     private UserService userService;
 
-    @RequestMapping(value = "/user", method = RequestMethod.GET)
-    public String user() {
-
-        return "/user/userList";
-    }
-
     @ResponseBody
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public String userList(Pagination pagination, @RequestParam(required = false) String search) {
@@ -55,4 +49,12 @@ public class UserController extends BaseController {
 
         return "/user/userUpdate";
     }
+
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    public String update(User user) {
+        userService.update(user);
+
+        return "redirect:/admin/user/userList.jsp";
+    }
+
 }

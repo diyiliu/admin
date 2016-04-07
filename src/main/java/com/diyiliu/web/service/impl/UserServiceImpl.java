@@ -15,7 +15,7 @@ import java.util.List;
  */
 
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl extends  BaseServiceImpl implements UserService {
 
     @Resource
     private UserDao userDao;

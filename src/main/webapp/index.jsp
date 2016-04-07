@@ -64,7 +64,7 @@
         </div>
     </form>
     <ul class="nav menu">
-        <li><a href="${ctx}/user/user.htm"><i class="fa fa-user fa-fw"></i> 用户管理</a></li>
+        <li><a href="${ctx}/admin/user/userList.jsp" target="main"><i class="fa fa-user fa-fw"></i> 用户管理</a></li>
         <li><a href="widgets.html"><i class="fa fa-cloud-upload fa-fw"></i> 发布管理</a></li>
         <li><a href="widgets.html"><i class="fa fa-file fa-fw"></i> 案例管理</a></li>
         <li><a href="widgets.html"><i class="fa fa-sitemap fa-fw"></i> 组织管理</a></li>
@@ -97,22 +97,23 @@
     </ul>
 </div><!--/.sidebar-->
 
-<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
-    <div class="row">
-        <ol class="breadcrumb">
-            <li><a href="index.html"><i class="fa fa-home fa-fw"></i></a></li>
-            <li class="active">首页</li>
-        </ol>
-    </div><!--/.row-->
-
-    <div class="row">
-        <div class="col-lg-12">
-            <h1 class="page-header">欢迎，你好！</h1>
-        </div>
-    </div><!--/.row-->
-</div>
-
+<!-- script -->
 <script src="${ctx}/static/js/jquery-1.11.1.min.js"></script>
 <script src="${ctx}/static/js/bootstrap.min.js"></script>
+
+<script>
+    $(function () {
+         $("ul.nav.menu li a").on('click', function () {
+            $(this).parent('li').siblings().each(function () {
+                $(this).removeClass('active');
+            });
+            $(this).parent('li').addClass('active');
+        });
+    })
+</script>
+
+<!-- iframe -->
+<iframe name="main" src="${ctx}/admin/home.jsp" width="100%" height="100%" frameborder="0" scrolling="auto"
+        style="margin: -50px 0 0 0; padding: 0"/>
 </body>
 </html>

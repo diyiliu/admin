@@ -9,7 +9,7 @@ import java.util.List;
  * Author: DIYILIU
  * Update: 2016-04-05 15:48
  */
-public interface UserService {
+public interface UserService extends BaseService{
 
     List<User> selectUsers(String condition);
 

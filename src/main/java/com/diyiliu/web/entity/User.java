@@ -1,15 +1,24 @@
 package com.diyiliu.web.entity;
 
+import com.diyiliu.web.entity.base.BaseEntity;
+
+import javax.persistence.Column;
+import javax.persistence.Table;
+
 /**
  * Description: User
  * Author: DIYILIU
  * Update: 2016-03-14 11:16
  */
 
-public class User {
+@Table(name = "USER", schema = "ID")
+public class User extends BaseEntity{
 
+    @Column(name = "ID")
     private Integer id;
+    @Column(name = "NAME")
     private String name;
+    @Column(name = "AGE")
     private Integer age;
     private Integer phone;
     private String email;

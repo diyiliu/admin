@@ -120,7 +120,7 @@
     </appender>
 
     <!-- 显示sql -->
-    <logger name="com.diyiliu.web.dao.UserDao" level="DEBUG"/>
+    <logger name="com.diyiliu.web.dao" level="DEBUG"/>
 
     <!-- 设置日志级别 -->
     <root level="INFO">

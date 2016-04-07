@@ -1,5 +1,6 @@
 package com.diyiliu.web.entity.base;
 
+import javax.persistence.Column;
 import javax.persistence.Table;
 import java.io.Serializable;
 import java.lang.reflect.Field;
@@ -23,18 +24,17 @@ public class BaseEntity implements Serializable {
             for (Field field : fields) {
 
                 if (field.isAccessible()) {
-                    column = field.getAnnotation(Table.class).name();
+                    column = field.getAnnotation(Column.class).name();
                     value = field.get(this);
-                    if (value != null) {
 
-                        map.put(column, value);
-                    }
+                    map.put(column, value);
                 } else {
                     field.setAccessible(true);
+                    Column columnField = field.getAnnotation(Column.class);
+                    if (columnField != null) {
+                        column = columnField.name();
+                        value = field.get(this);
 
-                    column = field.getAnnotation(Table.class).name();
-                    value = field.get(this);
-                    if (value != null) {
                         map.put(column, value);
                     }
 
