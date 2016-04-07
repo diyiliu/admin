@@ -33,10 +33,11 @@ import java.util.Properties;
  */
 @Intercepts({@Signature(type = StatementHandler.class, method = "prepare", args = {Connection.class})})
 public class BasePlugin implements Interceptor {
-    //private Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final static String BASE_SQL_ID = "baseSqlId";
+    private final static String DIALECT = "dialect";
 
-    private String baseSqlId = "baseSqlId";
-    private String dialect = ""; // 数据库方言
+    private String baseSqlId = "";
+    private String dialect = "";
 
     private final static ObjectFactory DEFAULT_OBJECT_FACTORY = new DefaultObjectFactory();
     private final static ObjectWrapperFactory DEFAULT_OBJECT_WRAPPER_FACTORY = new DefaultObjectWrapperFactory();
@@ -68,10 +69,6 @@ public class BasePlugin implements Interceptor {
 
         DataSource dataSource = (DataSource)
                 metaStatementHandler.getValue("delegate.configuration.environment.dataSource");
-        Connection connection = dataSource.getConnection();
-        String url = connection.getMetaData().getURL();
-
-        dialect = CommonUtil.fromJdbcUrl(url);
 
         String sqlId = mappedStatement.getId().substring(mappedStatement.getId().lastIndexOf(".") + 1);
 
@@ -179,6 +176,7 @@ public class BasePlugin implements Interceptor {
 
     @Override
     public void setProperties(Properties properties) {
-        this.baseSqlId = properties.getProperty(baseSqlId);
+        this.baseSqlId = properties.getProperty(BASE_SQL_ID);
+        this.dialect = properties.getProperty(DIALECT);
     }
 }

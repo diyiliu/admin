@@ -36,7 +36,10 @@ import java.util.Properties;
 public class PaginationPlugin implements Interceptor {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    private String pageSqlId = "pageSqlId"; // mybaits的数据库xml映射文件中需要拦截的ID(正则匹配)
+    private final static String PAGE_SQL_ID = "pageSqlId";
+    private final static String DIALECT = "dialect";
+
+    private String pageSqlId = ""; // mybaits的数据库xml映射文件中需要拦截的ID(正则匹配)
     private String dialect = ""; // 数据库方言
 
     private final static ObjectFactory DEFAULT_OBJECT_FACTORY = new DefaultObjectFactory();
@@ -72,10 +75,6 @@ public class PaginationPlugin implements Interceptor {
 
         Connection connection = dataSource.getConnection();
 
-        String url = connection.getMetaData().getURL();
-
-        dialect = CommonUtil.fromJdbcUrl(url);
-
         Pagination pagination = PaginationHelper.getPage();
 
         // 只重写需要分页的sql语句。通过MappedStatement的ID匹配，默认重写以Page结尾的MappedStatement的sql
@@ -103,11 +102,6 @@ public class PaginationPlugin implements Interceptor {
         } else {
             return target;
         }
-    }
-
-    @Override
-    public void setProperties(Properties properties) {
-        this.pageSqlId = properties.getProperty(pageSqlId);
     }
 
     public String buidPageSql(String sql, int offset, int limit) {
@@ -165,7 +159,7 @@ public class PaginationPlugin implements Interceptor {
             rs = statement.executeQuery();
             long count = 0;
             if (rs.next()) {
-                count =  rs.getLong(1);
+                count = rs.getLong(1);
             }
             page.setTotal(count);
         } catch (SQLException e) {
@@ -177,6 +171,9 @@ public class PaginationPlugin implements Interceptor {
                 }
                 if (statement != null) {
                     statement.close();
+                }
+                if (connection != null) {
+                    connection.close();
                 }
             } catch (SQLException e) {
                 logger.error("SQLException", e);
@@ -199,4 +196,9 @@ public class PaginationPlugin implements Interceptor {
         parameterHandler.setParameters(preparedStatement);
     }
 
+    @Override
+    public void setProperties(Properties properties) {
+        this.pageSqlId = properties.getProperty(PAGE_SQL_ID);
+        this.dialect = properties.getProperty(DIALECT);
+    }
 }

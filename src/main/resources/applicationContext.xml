@@ -59,6 +59,7 @@
     <bean id="baseInterceptor" class="com.diyiliu.support.plugin.BasePlugin">
         <property name="properties">
             <props>
+                <prop key="dialect">mysql</prop>
                 <prop key="baseSqlId">(insert|delete|update)Entity$</prop>
             </props>
         </property>
@@ -68,6 +69,7 @@
     <bean id="paginationInterceptor" class="com.diyiliu.support.plugin.PaginationPlugin">
         <property name="properties">
             <props>
+                <prop key="dialect">mysql</prop>
                 <prop key="pageSqlId">.*Page$</prop>
             </props>
         </property>
@@ -102,23 +104,22 @@
     <!-- 通知 -->
     <tx:advice id="tx" transaction-manager="transactionManager">
         <tx:attributes>
-            <!-- 添加 -->
             <tx:method name="save*" propagation="REQUIRED"/>
             <tx:method name="insert*" propagation="REQUIRED"/>
-            <!-- 删除 -->
+
             <tx:method name="delete*" propagation="REQUIRED"/>
             <tx:method name="remove*" propagation="REQUIRED"/>
-            <!-- 修改 -->
+
             <tx:method name="update*" propagation="REQUIRED"/>
-            <!-- 查询 -->
+
             <tx:method name="find*" read-only="true"/>
             <tx:method name="get*" read-only="true"/>
             <tx:method name="select*" read-only="true"/>
         </tx:attributes>
     </tx:advice>
 
+    <!-- 把事务控制在Service层 -->
     <aop:config>
-        <!--把事务控制在Service层 -->
         <aop:pointcut id="pc" expression="execution(* com.diyiliu.web.service.*.*(..))"/>
         <aop:advisor pointcut-ref="pc" advice-ref="tx"/>
     </aop:config>
