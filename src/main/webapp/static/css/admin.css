@@ -1049,3 +1049,8 @@ h1.page-header {
     border-right: 2px solid #fff;
 }
 
+.modal-dialog {
+    margin-top: 20%;
+}
+
+

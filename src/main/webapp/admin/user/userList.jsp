@@ -37,7 +37,7 @@
                 <div class="panel-body">
                     <div class="alert alert-warning" style="display: none;">
                         <a href="#" class="close" onclick="parentNode.style.display='none'">&times;</a>
-                        <strong>警告！</strong>请选择一个选项。
+                        <strong>警告！</strong><span></span>
                     </div>
                     <div id="toolbar" class="btn-group">
                         <button id="btn_add" type="button" class="btn btn-default">
@@ -56,6 +56,26 @@
         </div>
     </div><!--/.row-->
 </div><!--/.main-->
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">提 示</h4>
+            </div>
+            <div class="modal-body">
+                <span></span>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取 消</button>
+                <button type="button" class="btn btn-primary" id="confirm">确 定</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
 
 <script src="${ctx}/static/js/jquery-1.11.1.min.js"></script>
 <script src="${ctx}/static/js/bootstrap.min.js"></script>
@@ -81,8 +101,10 @@
         $('#toolbar :button').on('click', function () {
             var btn_id = this.id;
             var selects = $table.bootstrapTable('getSelections');
-            if(btn_id == 'btn_edit'){
-                if(selects.length != 1 ){
+
+            if (btn_id == 'btn_edit') {
+                if (selects.length != 1) {
+                    $('.alert').find('span').text('请选择一个选项。');
                     $('.alert').show();
                     return;
                 }
@@ -90,7 +112,30 @@
                 var item = selects[0];
                 location.href = "${ctx}/user/update.htm?id=" + item['id'];
             }
+
+            if (btn_id == 'btn_delete') {
+                if (selects.length < 1) {
+                    $('.alert').find('span').text('请至少选择一个选项。');
+                    $('.alert').show();
+                    return;
+                }
+                $('.alert').hide();
+                $('#myModal').find('.modal-body span').text('删除选中列?');
+                $('#myModal').modal('show');
+
+                $('#myModal').find('#confirm').on('click', function () {
+                    var ids = '';
+                    for (var i = 0; i < selects.length; i++) {
+                        var item = selects[i];
+                        ids += item['id'] + ','
+                    }
+                    alert(ids);
+                    //location.href = "${ctx}/user/delete.htm?ids=" + ids;
+                });
+            }
         });
+
+
     });
 </script>
 </body>
