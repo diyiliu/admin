@@ -50,24 +50,10 @@
         <property name="filters" value="${druid.filters}"/>
     </bean>
 
-    <!-- 数据库事务 -->
+    <!-- 数据库事务
     <bean id="dataSourceProxy" class="org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy">
         <property name="targetDataSource" ref="dataSource"/>
-    </bean>
-
-    <!-- Mybatis配置 -->
-    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-        <property name="dataSource" ref="dataSourceProxy"/>
-        <!-- 自动匹配Mapper映射文件 -->
-        <property name="mapperLocations" value="classpath:config/mapping/*Mapper.xml"/>
-        <property name="typeAliasesPackage" value="com.diyiliu.web.entity"/>
-        <property name="plugins">
-            <array>
-                <ref bean="baseInterceptor"/>
-                <ref bean="paginationInterceptor"/>
-            </array>
-        </property>
-    </bean>
+    </bean> -->
 
     <!-- 通用插件 -->
     <bean id="baseInterceptor" class="com.diyiliu.support.plugin.BasePlugin">
@@ -87,15 +73,30 @@
         </property>
     </bean>
 
+    <!-- Mybatis配置 -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <!-- 自动匹配Mapper映射文件 -->
+        <property name="mapperLocations" value="classpath:config/mapping/*Mapper.xml"/>
+        <property name="typeAliasesPackage" value="com.diyiliu.web.entity"/>
+        <property name="plugins">
+            <array>
+                <ref bean="baseInterceptor"/>
+                <ref bean="paginationInterceptor"/>
+            </array>
+        </property>
+    </bean>
+
     <!-- 通过扫描的模式，扫描目录在com.diyiliu.web.dao目录下，所有的mapper都继承SqlMapper接口 -->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <property name="basePackage" value="com.diyiliu.web.dao"/>
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
     </bean>
 
     <!-- 事务配置 -->
     <bean id="transactionManager"
           class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-        <property name="dataSource" ref="dataSourceProxy"/>
+        <property name="dataSource" ref="dataSource"/>
     </bean>
 
     <!-- 通知 -->

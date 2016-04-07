@@ -9,7 +9,7 @@
             FROM
                USER
             <where>
-              <if test="condition != null">
+              <if test="condition != null and condition != ''">
                   ID LIKE CONCAT('%', #{condition}, '%')
                   || NAME LIKE CONCAT('%', #{condition}, '%')
                   || AGE LIKE CONCAT('%', #{condition}, '%')

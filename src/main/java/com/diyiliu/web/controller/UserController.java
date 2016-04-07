@@ -31,7 +31,6 @@ public class UserController extends BaseController {
     @ResponseBody
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public String userList(Pagination pagination, @RequestParam(required = false) String search) {
-
         PaginationHelper.page(pagination.getOffset(), pagination.getLimit());
         List<User> userList = userService.selectUsers(search);
 

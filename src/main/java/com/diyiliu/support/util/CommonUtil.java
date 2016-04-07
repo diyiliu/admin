@@ -9,12 +9,8 @@ public class CommonUtil {
 
     public static  boolean isEmpty(String str) {
 
-        if (str == null || str.trim().length() < 1){
+        return str == null || str.trim().length() < 1;
 
-            return true;
-        }
-
-        return false;
     }
 
 
