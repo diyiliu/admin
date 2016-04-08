@@ -15,12 +15,12 @@
     <script src="${ctx}/static/js/lumino.glyphs.js"></script>
 </head>
 <body>
-<%@include file="/sidebar.jsp"%>
+<%@include file="./sidebar.jsp"%>
 
 <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
     <div class="row">
         <ol class="breadcrumb">
-            <li><a href="index.html"><i class="fa fa-home fa-fw"></i></a></li>
+            <li><a href="${ctx}/index.jsp"><i class="fa fa-home fa-fw"></i></a></li>
             <li class="active">首页</li>
         </ol>
     </div><!--/.row-->

@@ -49,7 +49,7 @@
         </div>
     </form>
     <ul class="nav menu">
-        <li id="user"><a href="${ctx}/admin/user/userList.jsp"><i class="fa fa-user fa-fw"></i> 用户管理</a></li>
+        <li id="user"><a href="${ctx}/admin/user/list.jsp"><i class="fa fa-user fa-fw"></i> 用户管理</a></li>
         <li><a href="widgets.html"><i class="fa fa-cloud-upload fa-fw"></i> 发布管理</a></li>
         <li><a href="widgets.html"><i class="fa fa-file fa-fw"></i> 案例管理</a></li>
         <li><a href="widgets.html"><i class="fa fa-sitemap fa-fw"></i> 组织管理</a></li>

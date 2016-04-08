@@ -19,7 +19,7 @@
 <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
     <div class="row">
         <ol class="breadcrumb">
-            <li><a href="index.html"><i class="fa fa-home fa-fw"></i></a></li>
+            <li><a href="${ctx}/index.jsp"><i class="fa fa-home fa-fw"></i></a></li>
             <li class="active">用户管理</li>
         </ol>
     </div><!--/.row-->
@@ -101,6 +101,11 @@
         $('#toolbar :button').on('click', function () {
             var btn_id = this.id;
             var selects = $table.bootstrapTable('getSelections');
+
+            if (btn_id == 'btn_add') {
+
+                location.href = '${ctx}/user/create.htm';
+            }
 
             if (btn_id == 'btn_edit') {
                 if (selects.length != 1) {

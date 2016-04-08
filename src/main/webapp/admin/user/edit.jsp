@@ -19,7 +19,7 @@
 <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
     <div class="row">
         <ol class="breadcrumb">
-            <li><a href="index.html"><i class="fa fa-home fa-fw"></i></a></li>
+            <li><a href="${ctx}/index.jsp"><i class="fa fa-home fa-fw"></i></a></li>
             <li class="active">用户管理</li>
         </ol>
     </div><!--/.row-->
@@ -27,12 +27,12 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="panel panel-default">
-                <div class="panel-heading">用户</div>
+                <div class="panel-heading">用户${op}</div>
                 <div class="panel-body">
-                    <form class="form-horizontal col-md-8" action="${ctx}/user/update.htm" method="post">
+                    <form class="form-horizontal col-md-8" method="post">
                         <fieldset>
-                            <div class="form-group hidden">
-                                <label class="col-md-3 control-label" for="name">ID</label>
+                            <div class="form-group <c:if test="${op eq '修改'}">hidden</c:if>">
+                                <label class="col-md-3 control-label" for="name">编 号</label>
                                 <div class="col-md-9">
                                     <input id="id" name="id" type="text" placeholder="Your ID" class="form-control" value="${user.id}">
                                 </div>
