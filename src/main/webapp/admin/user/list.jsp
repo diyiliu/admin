@@ -88,6 +88,7 @@
             showRefresh: true,
             search: true,
             pagination: true,
+            clickToSelect: true,
             toolbar: '#toolbar',
             sidePagination: 'server',
             columns: [
