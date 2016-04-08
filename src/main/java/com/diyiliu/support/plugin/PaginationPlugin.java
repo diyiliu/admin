@@ -39,8 +39,8 @@ public class PaginationPlugin implements Interceptor {
     private final static String PAGE_SQL_ID = "pageSqlId";
     private final static String DIALECT = "dialect";
 
-    private String pageSqlId = ""; // mybaits的数据库xml映射文件中需要拦截的ID(正则匹配)
-    private String dialect = ""; // 数据库方言
+    private String pageSqlId; // mybaits的数据库xml映射文件中需要拦截的ID(正则匹配)
+    private String dialect; // 数据库方言
 
     private final static ObjectFactory DEFAULT_OBJECT_FACTORY = new DefaultObjectFactory();
     private final static ObjectWrapperFactory DEFAULT_OBJECT_WRAPPER_FACTORY = new DefaultObjectWrapperFactory();
@@ -48,7 +48,6 @@ public class PaginationPlugin implements Interceptor {
 
     @Override
     public Object intercept(Invocation invocation) throws Throwable {
-
         StatementHandler statementHandler = (StatementHandler) invocation.getTarget();
         MetaObject metaStatementHandler = MetaObject.forObject(statementHandler, DEFAULT_OBJECT_FACTORY,
                 DEFAULT_OBJECT_WRAPPER_FACTORY, DEFAULT_REFLECTOR_FACTORY);
@@ -70,21 +69,22 @@ public class PaginationPlugin implements Interceptor {
         MappedStatement mappedStatement = (MappedStatement)
                 metaStatementHandler.getValue("delegate.mappedStatement");
 
-        DataSource dataSource = (DataSource)
-                metaStatementHandler.getValue("delegate.configuration.environment.dataSource");
-
-        Connection connection = dataSource.getConnection();
-
         Pagination pagination = PaginationHelper.getPage();
 
         // 只重写需要分页的sql语句。通过MappedStatement的ID匹配，默认重写以Page结尾的MappedStatement的sql
         if (mappedStatement.getId().matches(pageSqlId) &&
                 pagination != null && dialect != null) {
+            logger.info("Mybatis 分页插件...");
+            // 数据源
+            DataSource dataSource = (DataSource)
+                    metaStatementHandler.getValue("delegate.configuration.environment.dataSource");
 
             BoundSql boundSql = (BoundSql) metaStatementHandler.getValue("delegate.boundSql");
             String sql = boundSql.getSql();
-            // 设置参数
-            setPageParameter(sql, connection, mappedStatement, boundSql, pagination);
+
+            // 设置参数(切记要及时关闭数据库连接connection!)
+            setPageParameter(sql, dataSource, mappedStatement, boundSql, pagination);
+
             // 分页sql
             sql = buidPageSql(sql, pagination.getOffset(), pagination.getLimit());
             // 重写sql
@@ -139,19 +139,21 @@ public class PaginationPlugin implements Interceptor {
      * 从数据库里查询总的记录数并计算总页数，回写进分页参数
      *
      * @param sql
-     * @param connection
+     * @param dataSource
      * @param mappedStatement
      * @param boundSql
      * @param page
      */
-    private void setPageParameter(String sql, Connection connection, MappedStatement mappedStatement,
+    private void setPageParameter(String sql, DataSource dataSource, MappedStatement mappedStatement,
                                   BoundSql boundSql, Pagination page) {
         // 记录总记录数
         String countSql = "select count(0) from (" + sql + ") as total";
 
+        Connection connection = null;
         PreparedStatement statement = null;
         ResultSet rs = null;
         try {
+            connection = dataSource.getConnection();
             statement = connection.prepareStatement(countSql);
             BoundSql countBS = new BoundSql(mappedStatement.getConfiguration(), countSql,
                     boundSql.getParameterMappings(), boundSql.getParameterObject());

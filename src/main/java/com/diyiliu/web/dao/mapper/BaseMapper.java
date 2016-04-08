@@ -16,6 +16,5 @@ public interface BaseMapper {
 
     void updateEntity(BaseEntity entity);
 
-    void batchDelete(@Param(value = "table") String table,
-                     @Param(value = "key") String key, @Param(value = "keys") String[] keys);
+    void batchDelete(@Param("table") String table, @Param("key") String key, @Param("keys") String[] keys);
 }

@@ -2,6 +2,7 @@ package com.diyiliu.web.controller;
 
 import com.diyiliu.support.other.Pagination;
 import com.diyiliu.support.other.PaginationHelper;
+import com.diyiliu.support.util.JsonUtil;
 import com.diyiliu.web.controller.base.BaseController;
 import com.diyiliu.web.entity.User;
 import com.diyiliu.web.service.UserService;
@@ -56,9 +57,10 @@ public class UserController extends BaseController {
         return "redirect:/admin/user/userList.jsp";
     }
 
-    @RequestMapping(value = "/delete")
+    @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public String delete(@RequestParam String id) {
         String[] ids = id.split(",");
+
         userService.batchDelete("USER", "id", ids);
 
         return "redirect:/admin/user/userList.jsp";

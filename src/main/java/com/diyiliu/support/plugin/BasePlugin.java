@@ -33,11 +33,13 @@ import java.util.Properties;
  */
 @Intercepts({@Signature(type = StatementHandler.class, method = "prepare", args = {Connection.class})})
 public class BasePlugin implements Interceptor {
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
     private final static String BASE_SQL_ID = "baseSqlId";
     private final static String DIALECT = "dialect";
 
-    private String baseSqlId = "";
-    private String dialect = "";
+    private String baseSqlId;
+    private String dialect;
 
     private final static ObjectFactory DEFAULT_OBJECT_FACTORY = new DefaultObjectFactory();
     private final static ObjectWrapperFactory DEFAULT_OBJECT_WRAPPER_FACTORY = new DefaultObjectWrapperFactory();
@@ -45,7 +47,6 @@ public class BasePlugin implements Interceptor {
 
     @Override
     public Object intercept(Invocation invocation) throws Throwable {
-
         StatementHandler statementHandler = (StatementHandler) invocation.getTarget();
         MetaObject metaStatementHandler = MetaObject.forObject(statementHandler, DEFAULT_OBJECT_FACTORY,
                 DEFAULT_OBJECT_WRAPPER_FACTORY, DEFAULT_REFLECTOR_FACTORY);
@@ -67,12 +68,10 @@ public class BasePlugin implements Interceptor {
         MappedStatement mappedStatement = (MappedStatement)
                 metaStatementHandler.getValue("delegate.mappedStatement");
 
-        DataSource dataSource = (DataSource)
-                metaStatementHandler.getValue("delegate.configuration.environment.dataSource");
-
         String sqlId = mappedStatement.getId().substring(mappedStatement.getId().lastIndexOf(".") + 1);
 
         if (sqlId.matches(baseSqlId)) {
+            logger.info("Mybatis 通用插件...");
 
             BoundSql boundSql = (BoundSql) metaStatementHandler.getValue("delegate.boundSql");
             Object parameterObject = boundSql.getParameterObject();
