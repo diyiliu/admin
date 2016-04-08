@@ -56,4 +56,12 @@ public class UserController extends BaseController {
         return "redirect:/admin/user/userList.jsp";
     }
 
+    @RequestMapping(value = "/delete")
+    public String delete(@RequestParam String id) {
+        String[] ids = id.split(",");
+        userService.batchDelete("USER", "id", ids);
+
+        return "redirect:/admin/user/userList.jsp";
+    }
+
 }

@@ -123,7 +123,7 @@ public class BasePlugin implements Interceptor {
             return strb.toString();
         } else if (sqlId.equals(Constant.Crud.DELETE)) {
 
-            strb = new StringBuilder("DELETE ");
+            strb = new StringBuilder("DELETE FROM ");
             strb.append(table).append(" WHERE ").append(key).append("=").append(format(map.get(key), dialect));
 
             return strb.toString();

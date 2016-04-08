@@ -36,4 +36,10 @@ public class BaseServiceImpl implements BaseService {
 
         baseDao.updateEntity(entity);
     }
+
+    @Override
+    public void batchDelete(String table, String key, String[] keys) {
+
+        baseDao.batchDelete(table, key, keys);
+    }
 }

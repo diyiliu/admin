@@ -14,6 +14,8 @@
     <script src="${ctx}/static/js/lumino.glyphs.js"></script>
 </head>
 <body>
+<%@include file="../../sidebar.jsp" %>
+
 <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
     <div class="row">
         <ol class="breadcrumb">
@@ -21,14 +23,6 @@
             <li class="active">用户管理</li>
         </ol>
     </div><!--/.row-->
-
-    <!--
-    <div class="row">
-        <div class="col-lg-12">
-            <h1 class="page-header">欢迎，你好！</h1>
-        </div>
-    </div>
-    /.row-->
 
     <div class="row">
         <div class="col-lg-12">
@@ -50,7 +44,10 @@
                             <span class="fa fa-times fa-fw" aria-hidden="true"></span>删除
                         </button>
                     </div>
-                    <table id="userList"></table>
+                    <form id="form">
+                        <table id="userList"></table>
+                        <input name="id" class="hidden">
+                    </form>
                 </div>
             </div>
         </div>
@@ -63,14 +60,14 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="myModalLabel">提 示</h4>
+                <h4 class="modal-title text-danger" id="myModalLabel">提 示</h4>
             </div>
             <div class="modal-body">
                 <span></span>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">取 消</button>
-                <button type="button" class="btn btn-primary" id="confirm">确 定</button>
+                <a class="btn btn-default" data-dismiss="modal">取 消</a>
+                <a class="btn btn-primary" name="confirm">确 定</a>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
@@ -80,9 +77,12 @@
 <script src="${ctx}/static/js/jquery-1.11.1.min.js"></script>
 <script src="${ctx}/static/js/bootstrap.min.js"></script>
 <script src="${ctx}/static/js/bootstrap-table.js"></script>
+<script src="${ctx}/static/js/admin.js"></script>
 
 <script>
     $(function () {
+        $('ul.nav').find('#user').addClass('active');
+
         var $table = $('#userList').bootstrapTable({
             url: '${ctx}/user/list.htm',
             showRefresh: true,
@@ -110,7 +110,7 @@
                 }
 
                 var item = selects[0];
-                location.href = "${ctx}/user/update.htm?id=" + item['id'];
+                location.href = '${ctx}/user/update.htm?id=' + item['id'];
             }
 
             if (btn_id == 'btn_delete') {
@@ -119,23 +119,22 @@
                     $('.alert').show();
                     return;
                 }
+                var ids = '';
+                for (var i = 0; i < selects.length; i++){
+                    var item = selects[i];
+                    ids += item['id'] + ',';
+                }
+
+                $('#form').find('input[name=\'id\']').val(ids);
+                $('#form').attr('action', '${ctx}/user/delete.htm')
+                        .attr('method', 'POST');
+
                 $('.alert').hide();
                 $('#myModal').find('.modal-body span').text('删除选中列?');
+                $('#myModal').find('.modal-footer a[name=\'confirm\']').attr('href', 'javascript:$(\'#form\').submit();');
                 $('#myModal').modal('show');
-
-                $('#myModal').find('#confirm').on('click', function () {
-                    var ids = '';
-                    for (var i = 0; i < selects.length; i++) {
-                        var item = selects[i];
-                        ids += item['id'] + ','
-                    }
-                    alert(ids);
-                    //location.href = "${ctx}/user/delete.htm?ids=" + ids;
-                });
             }
         });
-
-
     });
 </script>
 </body>

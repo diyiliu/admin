@@ -14,6 +14,8 @@
     <script src="${ctx}/static/js/lumino.glyphs.js"></script>
 </head>
 <body>
+<%@include file="../../sidebar.jsp"%>
+
 <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
     <div class="row">
         <ol class="breadcrumb">
@@ -78,6 +80,11 @@
 
 <script src="${ctx}/static/js/jquery-1.11.1.min.js"></script>
 <script src="${ctx}/static/js/bootstrap.min.js"></script>
-
+<script src="${ctx}/static/js/admin.js"></script>
+<script>
+    $(function () {
+        $('ul.nav').find('#user').addClass('active');
+    });
+</script>
 </body>
 </html>

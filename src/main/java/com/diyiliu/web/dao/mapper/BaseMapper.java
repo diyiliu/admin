@@ -1,6 +1,7 @@
 package com.diyiliu.web.dao.mapper;
 
 import com.diyiliu.web.entity.base.BaseEntity;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * Description: BaseMapper
@@ -14,4 +15,7 @@ public interface BaseMapper {
     void deleteEntity(BaseEntity entity);
 
     void updateEntity(BaseEntity entity);
+
+    void batchDelete(@Param(value = "table") String table,
+                     @Param(value = "key") String key, @Param(value = "keys") String[] keys);
 }

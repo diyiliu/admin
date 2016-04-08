@@ -14,4 +14,14 @@
     <update id="updateEntity">
         update table set (fleids) where id = (id)
     </update>
+
+    <delete id="batchDelete" statementType="STATEMENT">
+        DELETE
+          FROM ${table}
+        WHERE ${key} in
+        <foreach collection="keys" item="i" open="(" separator="," close=")">
+            '${i}'
+        </foreach>
+    </delete>
+
 </mapper>

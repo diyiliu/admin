@@ -15,4 +15,6 @@ public interface BaseService {
     void delete(BaseEntity entity);
 
     void update(BaseEntity entity);
+
+    void batchDelete(String table, String key, String[] keys);
 }
