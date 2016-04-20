@@ -67,7 +67,7 @@
 
                             <div class="form-group">
                                 <div class="col-md-12 widget-right">
-                                    <button type="submit" class="btn btn-default btn-md pull-right">提交</button>
+                                    <button type="submit" class="btn btn-default pull-right">提交</button>
                                 </div>
                             </div>
                         </fieldset>
