@@ -22,7 +22,7 @@ import java.util.List;
  */
 
 @Controller
-@RequestMapping(value = "/user")
+@RequestMapping("/user")
 public class UserController extends BaseController {
 
     @Resource

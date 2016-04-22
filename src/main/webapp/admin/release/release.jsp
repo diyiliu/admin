@@ -8,7 +8,7 @@
     <link href="${ctx}/static/css/bootstrap.min.css" rel="stylesheet">
     <link href="${ctx}/static/css/font-awesome.min.css" rel="stylesheet">
     <link href="${ctx}/static/css/bootstrap-table.css" rel="stylesheet">
-    <link href="${ctx}/static/css/datepicker/datepicker.css" rel="stylesheet">
+    <link href="${ctx}/static/css/datepicker/bootstrap-datepicker3.css" rel="stylesheet">
     <link href="${ctx}/static/css/summernote/summernote.css" rel="stylesheet">
     <link href="${ctx}/static/css/admin.css" rel="stylesheet">
 
