@@ -28,6 +28,22 @@ public class DateUtil {
         return date;
     }
 
+    public static Date stringToDate(String datetime, String fm) {
+        DateFormat format = new SimpleDateFormat(fm);
+
+        Date date = null;
+        if (!CommonUtil.isEmpty(datetime)) {
+            try {
+
+                date = format.parse(datetime);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return date;
+    }
+
     public static String dateToString(Date date) {
 
         if (date == null) {
@@ -47,5 +63,4 @@ public class DateUtil {
 
         return String.format(format, date);
     }
-
 }

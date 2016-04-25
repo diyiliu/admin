@@ -31,26 +31,26 @@
             <div class="panel panel-default">
                 <div class="panel-heading">发布信息</div>
                 <div class="panel-body">
-                    <form class="form-horizontal col-md-10" id="form" action="" method="post">
+                    <form class="form-horizontal col-md-10" id="form" action="${ctx}/news/release.htm" method="post">
 
                         <div class="form-group">
                             <label for="date">发布 日期</label>
-                            <input class="form-control datepicker" id="date" name="article.releaseDate">
+                            <input class="form-control datepicker" id="date" name="news.createTime">
                         </div>
 
                         <div class="form-group">
                             <label for="title">标 题</label>
-                            <input type="text" placeholder="Your title" class="form-control" id="title" name="article.title">
+                            <input type="text" placeholder="Your title" class="form-control" id="title" name="news.title">
                         </div>
 
                         <div class="form-group">
                             <label for="summary">摘 要</label>
-                            <textarea class="form-control" id="summary" name="article.summary"
+                            <textarea class="form-control" id="summary" name="news.summary"
                                       placeholder="Please enter your summary here..." rows="3"></textarea>
                         </div>
 
                         <div class="form-group hidden">
-                            <textarea id="content" name="article.content"></textarea>
+                            <textarea id="content" name="news.content"></textarea>
                         </div>
 
                         <div class="form-group">
@@ -82,7 +82,7 @@
 
         $('.datepicker').datepicker({
             language: 'zh-CN',
-            todayBtn: 'linked',
+            //todayBtn: 'linked',
             format: 'yyyy-mm-dd'
         });
 
