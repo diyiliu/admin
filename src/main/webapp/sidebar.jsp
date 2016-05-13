@@ -51,9 +51,9 @@
     <ul class="nav menu">
         <li id="user"><a href="${ctx}/admin/user/list.jsp"><i class="fa fa-user fa-fw"></i> 用户管理</a></li>
         <li id="release"><a href="${ctx}/admin/release/release.jsp"><i class="fa fa-cloud-upload fa-fw"></i> 发布管理</a></li>
-        <li><a href="widgets.html"><i class="fa fa-file fa-fw"></i> 案例管理</a></li>
-        <li><a href="widgets.html"><i class="fa fa-sitemap fa-fw"></i> 组织管理</a></li>
-        <li><a href="widgets.html"><i class="fa fa-key fa-fw"></i> 权限列表</a></li>
+        <li><a href="#"><i class="fa fa-file fa-fw"></i> 案例管理</a></li>
+        <li><a href="${ctx}/admin/map.jsp"><i class="fa fa-map-marker fa-fw"></i> 车辆分布</a></li>
+        <li><a href="#"><i class="fa fa-key fa-fw"></i> 权限列表</a></li>
         <li class="parent ">
             <a data-toggle="collapse" href="#sub-item-1">
                 <i class="fa fa-cogs fa-fw"></i> 系统配置
@@ -76,7 +76,7 @@
                 </li>
             </ul>
         </li>
-        <li><a href="widgets.html"><i class="fa fa-tags fa-fw"></i> 日志查看</a></li>
+        <li><a href="#"><i class="fa fa-tags fa-fw"></i> 日志查看</a></li>
         <li role="presentation" class="divider"></li>
         <li><a href="login.html"><i class="fa fa-sign-out fa-fw"></i> Login Page</a></li>
     </ul>
