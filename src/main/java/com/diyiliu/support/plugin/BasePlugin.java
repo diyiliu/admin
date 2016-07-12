@@ -1,25 +1,19 @@
 package com.diyiliu.support.plugin;
 
 import com.diyiliu.support.other.Constant;
-import com.diyiliu.support.util.CommonUtil;
+import com.diyiliu.support.plugin.abs.SPlugin;
 import com.diyiliu.support.util.DateUtil;
 import com.diyiliu.web.entity.base.BaseEntity;
 import org.apache.ibatis.executor.statement.StatementHandler;
 import org.apache.ibatis.mapping.BoundSql;
 import org.apache.ibatis.mapping.MappedStatement;
-import org.apache.ibatis.plugin.*;
-import org.apache.ibatis.reflection.DefaultReflectorFactory;
+import org.apache.ibatis.plugin.Intercepts;
+import org.apache.ibatis.plugin.Invocation;
+import org.apache.ibatis.plugin.Plugin;
+import org.apache.ibatis.plugin.Signature;
 import org.apache.ibatis.reflection.MetaObject;
-import org.apache.ibatis.reflection.ReflectorFactory;
-import org.apache.ibatis.reflection.factory.DefaultObjectFactory;
-import org.apache.ibatis.reflection.factory.ObjectFactory;
-import org.apache.ibatis.reflection.wrapper.DefaultObjectWrapperFactory;
-import org.apache.ibatis.reflection.wrapper.ObjectWrapperFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.persistence.Table;
-import javax.sql.DataSource;
 import java.sql.Connection;
 import java.util.Date;
 import java.util.HashMap;
@@ -32,53 +26,28 @@ import java.util.Properties;
  * Update: 2016-02-19 11:22
  */
 @Intercepts({@Signature(type = StatementHandler.class, method = "prepare", args = {Connection.class})})
-public class BasePlugin implements Interceptor {
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
-
-    private final static String BASE_SQL_ID = "baseSqlId";
-    private final static String DIALECT = "dialect";
+public class BasePlugin extends SPlugin {
 
     private String baseSqlId;
     private String dialect;
 
-    private final static ObjectFactory DEFAULT_OBJECT_FACTORY = new DefaultObjectFactory();
-    private final static ObjectWrapperFactory DEFAULT_OBJECT_WRAPPER_FACTORY = new DefaultObjectWrapperFactory();
-    private final static ReflectorFactory DEFAULT_REFLECTOR_FACTORY = new DefaultReflectorFactory();
-
     @Override
     public Object intercept(Invocation invocation) throws Throwable {
-        StatementHandler statementHandler = (StatementHandler) invocation.getTarget();
-        MetaObject metaStatementHandler = MetaObject.forObject(statementHandler, DEFAULT_OBJECT_FACTORY,
-                DEFAULT_OBJECT_WRAPPER_FACTORY, DEFAULT_REFLECTOR_FACTORY);
+        strip(invocation.getTarget());
 
-        // 分离代理对象链(由于目标类可能被多个拦截器拦截，从而形成多次代理，通过下面的两次循环可以分离出最原始的的目标类)
-        while (metaStatementHandler.hasGetter("h")) {
-            Object object = metaStatementHandler.getValue("h");
-
-            metaStatementHandler = MetaObject.forObject(object, DEFAULT_OBJECT_FACTORY,
-                    DEFAULT_OBJECT_WRAPPER_FACTORY, DEFAULT_REFLECTOR_FACTORY);
-        }
-        // 分离最后一个代理对象的目标类
-        while (metaStatementHandler.hasGetter("target")) {
-            Object object = metaStatementHandler.getValue("target");
-            metaStatementHandler = MetaObject.forObject(object, DEFAULT_OBJECT_FACTORY,
-                    DEFAULT_OBJECT_WRAPPER_FACTORY, DEFAULT_REFLECTOR_FACTORY);
-        }
-
-        MappedStatement mappedStatement = (MappedStatement)
-                metaStatementHandler.getValue("delegate.mappedStatement");
+        MappedStatement mappedStatement = (MappedStatement) getValue("mappedStatement");
 
         String sqlId = mappedStatement.getId().substring(mappedStatement.getId().lastIndexOf(".") + 1);
 
         if (sqlId.matches(baseSqlId)) {
             logger.info("Mybatis 通用插件...");
 
-            BoundSql boundSql = (BoundSql) metaStatementHandler.getValue("delegate.boundSql");
+            BoundSql boundSql = (BoundSql) getValue("boundSql");
             Object parameterObject = boundSql.getParameterObject();
 
             if (parameterObject instanceof BaseEntity) {
 
-                metaStatementHandler.setValue("delegate.boundSql.sql", joinSql(sqlId, (BaseEntity) parameterObject));
+                setValue("boundSql.sql", joinSql(sqlId, (BaseEntity) parameterObject));
             }
         }
 
@@ -138,6 +107,10 @@ public class BasePlugin implements Interceptor {
             strb.append(" WHERE ").append(key).append("=").append(format(map.get(key), dialect));
 
             return strb.toString();
+        } else if (sqlId.equals(Constant.Crud.SELECT)) {
+            strb = new StringBuilder("SELECT * FROM ");
+            strb.append(table);
+            return strb.toString();
         }
 
         return null;
@@ -175,7 +148,7 @@ public class BasePlugin implements Interceptor {
 
     @Override
     public void setProperties(Properties properties) {
-        this.baseSqlId = properties.getProperty(BASE_SQL_ID);
-        this.dialect = properties.getProperty(DIALECT);
+        this.baseSqlId = properties.getProperty(Constant.Crud.BASE_SQL_ID);
+        this.dialect = properties.getProperty(Constant.Crud.DIALECT);
     }
 }

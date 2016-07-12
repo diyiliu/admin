@@ -1,23 +1,18 @@
 package com.diyiliu.support.plugin;
 
+import com.diyiliu.support.other.Constant;
 import com.diyiliu.support.other.Pagination;
 import com.diyiliu.support.other.PaginationHelper;
-import com.diyiliu.support.util.CommonUtil;
+import com.diyiliu.support.plugin.abs.SPlugin;
 import org.apache.ibatis.executor.parameter.ParameterHandler;
 import org.apache.ibatis.executor.statement.StatementHandler;
 import org.apache.ibatis.mapping.BoundSql;
 import org.apache.ibatis.mapping.MappedStatement;
-import org.apache.ibatis.plugin.*;
-import org.apache.ibatis.reflection.DefaultReflectorFactory;
-import org.apache.ibatis.reflection.MetaObject;
-import org.apache.ibatis.reflection.ReflectorFactory;
-import org.apache.ibatis.reflection.factory.DefaultObjectFactory;
-import org.apache.ibatis.reflection.factory.ObjectFactory;
-import org.apache.ibatis.reflection.wrapper.DefaultObjectWrapperFactory;
-import org.apache.ibatis.reflection.wrapper.ObjectWrapperFactory;
+import org.apache.ibatis.plugin.Intercepts;
+import org.apache.ibatis.plugin.Invocation;
+import org.apache.ibatis.plugin.Plugin;
+import org.apache.ibatis.plugin.Signature;
 import org.apache.ibatis.scripting.defaults.DefaultParameterHandler;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -33,53 +28,27 @@ import java.util.Properties;
  */
 
 @Intercepts({@Signature(type = StatementHandler.class, method = "prepare", args = {Connection.class})})
-public class PaginationPlugin implements Interceptor {
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
-
-    private final static String PAGE_SQL_ID = "pageSqlId";
-    private final static String DIALECT = "dialect";
+public class PaginationPlugin extends SPlugin {
 
     private String pageSqlId; // mybaits的数据库xml映射文件中需要拦截的ID(正则匹配)
     private String dialect; // 数据库方言
 
-    private final static ObjectFactory DEFAULT_OBJECT_FACTORY = new DefaultObjectFactory();
-    private final static ObjectWrapperFactory DEFAULT_OBJECT_WRAPPER_FACTORY = new DefaultObjectWrapperFactory();
-    private final static ReflectorFactory DEFAULT_REFLECTOR_FACTORY = new DefaultReflectorFactory();
-
     @Override
     public Object intercept(Invocation invocation) throws Throwable {
-        StatementHandler statementHandler = (StatementHandler) invocation.getTarget();
-        MetaObject metaStatementHandler = MetaObject.forObject(statementHandler, DEFAULT_OBJECT_FACTORY,
-                DEFAULT_OBJECT_WRAPPER_FACTORY, DEFAULT_REFLECTOR_FACTORY);
+        strip(invocation.getTarget());
 
-        // 分离代理对象链(由于目标类可能被多个拦截器拦截，从而形成多次代理，通过下面的两次循环可以分离出最原始的的目标类)
-        while (metaStatementHandler.hasGetter("h")) {
-            Object object = metaStatementHandler.getValue("h");
+        MappedStatement mappedStatement = (MappedStatement) getValue("mappedStatement");
 
-            metaStatementHandler = MetaObject.forObject(object, DEFAULT_OBJECT_FACTORY,
-                    DEFAULT_OBJECT_WRAPPER_FACTORY, DEFAULT_REFLECTOR_FACTORY);
-        }
-        // 分离最后一个代理对象的目标类
-        while (metaStatementHandler.hasGetter("target")) {
-            Object object = metaStatementHandler.getValue("target");
-            metaStatementHandler = MetaObject.forObject(object, DEFAULT_OBJECT_FACTORY,
-                    DEFAULT_OBJECT_WRAPPER_FACTORY, DEFAULT_REFLECTOR_FACTORY);
-        }
-
-        MappedStatement mappedStatement = (MappedStatement)
-                metaStatementHandler.getValue("delegate.mappedStatement");
+        String sqlId = mappedStatement.getId().substring(mappedStatement.getId().lastIndexOf(".") + 1);
 
         Pagination pagination = PaginationHelper.getPage();
-
-        // 只重写需要分页的sql语句。通过MappedStatement的ID匹配，默认重写以Page结尾的MappedStatement的sql
-        if (mappedStatement.getId().matches(pageSqlId) &&
+        if (sqlId.matches(pageSqlId) &&
                 pagination != null && dialect != null) {
             logger.info("Mybatis 分页插件...");
             // 数据源
-            DataSource dataSource = (DataSource)
-                    metaStatementHandler.getValue("delegate.configuration.environment.dataSource");
+            DataSource dataSource = (DataSource)getValue("configuration.environment.dataSource");
 
-            BoundSql boundSql = (BoundSql) metaStatementHandler.getValue("delegate.boundSql");
+            BoundSql boundSql = (BoundSql) getValue("boundSql");
             String sql = boundSql.getSql();
 
             // 设置参数(切记要及时关闭数据库连接connection!)
@@ -88,7 +57,7 @@ public class PaginationPlugin implements Interceptor {
             // 分页sql
             sql = buidPageSql(sql, pagination.getOffset(), pagination.getLimit());
             // 重写sql
-            metaStatementHandler.setValue("delegate.boundSql.sql", sql);
+            setValue("boundSql.sql", sql);
         }
 
         return invocation.proceed();
@@ -200,7 +169,7 @@ public class PaginationPlugin implements Interceptor {
 
     @Override
     public void setProperties(Properties properties) {
-        this.pageSqlId = properties.getProperty(PAGE_SQL_ID);
-        this.dialect = properties.getProperty(DIALECT);
+        this.pageSqlId = properties.getProperty(Constant.Crud.PAGE_SQL_ID);
+        this.dialect = properties.getProperty(Constant.Crud.DIALECT);
     }
 }

@@ -60,7 +60,7 @@
         <property name="properties">
             <props>
                 <prop key="dialect">mysql</prop>
-                <prop key="baseSqlId">(insert|delete|update)Entity$</prop>
+                <prop key="baseSqlId">.*Entity$</prop>
             </props>
         </property>
     </bean>
@@ -70,7 +70,16 @@
         <property name="properties">
             <props>
                 <prop key="dialect">mysql</prop>
-                <prop key="pageSqlId">.*Page$</prop>
+                <prop key="pageSqlId">(select|query|)Entity$</prop>
+            </props>
+        </property>
+    </bean>
+
+    <!-- 结果处理 -->
+    <bean id="resultInterceptor" class="com.diyiliu.support.plugin.ResultPlugin">
+        <property name="properties">
+            <props>
+                <prop key="resultSqlId">(select|query)Entity$</prop>
             </props>
         </property>
     </bean>
@@ -82,9 +91,11 @@
         <property name="mapperLocations" value="classpath:config/mapping/*Mapper.xml"/>
         <property name="typeAliasesPackage" value="com.diyiliu.web.entity"/>
         <property name="plugins">
+            <!-- 顺序：拦截的方法相同时，从下往上执行 -->
             <array>
-                <ref bean="baseInterceptor"/>
+                <ref bean="resultInterceptor"/>
                 <ref bean="paginationInterceptor"/>
+                <ref bean="baseInterceptor"/>
             </array>
         </property>
     </bean>

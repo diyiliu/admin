@@ -76,4 +76,16 @@ public class TestController extends BaseController{
         return toJson(pagination);
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/dynamicQuery")
+    public String selectBySql() {
+        String sql = "SELECT" +
+                " t.*" +
+                " FROM" +
+                " city t" +
+                " INNER JOIN country c ON t.CountryCode = c.`Code`" +
+                " AND c.`Name` = 'china'";
+        List<Map> list = userService.selectBySql(sql);
+        return toJson(list);
+    }
 }

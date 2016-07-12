@@ -6,6 +6,8 @@ import com.diyiliu.web.service.BaseService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Description: BaseServiceImpl
@@ -38,8 +40,19 @@ public class BaseServiceImpl implements BaseService {
     }
 
     @Override
+    public List select(BaseEntity entity) {
+
+        return baseDao.selectEntity(entity);
+    }
+
+    @Override
     public void batchDelete(String table, String key, String[] keys) {
 
         baseDao.batchDelete(table, key, keys);
+    }
+
+    @Override
+    public List<Map> selectBySql(String sql) {
+        return baseDao.selectBySql(sql);
     }
 }

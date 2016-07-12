@@ -32,7 +32,7 @@ public class UserController extends BaseController {
     @RequestMapping(value = "/list", method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
     public String userList(Pagination pagination, @RequestParam(required = false) String search) {
         PaginationHelper.page(pagination.getOffset(), pagination.getLimit());
-        List<User> userList = userService.selectUsers(search);
+        List<User> userList = userService.select(new User());
 
         pagination.setRows(userList);
         pagination.setTotal(PaginationHelper.getCount());
